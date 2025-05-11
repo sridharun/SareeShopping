@@ -1,20 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "./CartContext";
 import axios from "axios";
 
 export default function SareeShop() {
   const { addToCart } = useContext(CartContext);
   const location = useLocation();
+  const navigate = useNavigate();
+
   const [sarees, setSarees] = useState([]);
   const [addedMessage, setAddedMessage] = useState("");
 
   const queryParams = new URLSearchParams(location.search);
   const selectedCategory = queryParams.get("category");
 
-  // ✅ Fetch saree data from backend
   useEffect(() => {
-    axios.get("http://localhost:5000/api/products")
+    axios
+      .get("http://localhost:5000/api/products")
       .then((res) => setSarees(res.data))
       .catch((err) => console.error("API error:", err));
   }, []);
@@ -28,6 +30,10 @@ export default function SareeShop() {
     addToCart(saree);
     setAddedMessage("Added to Cart");
     setTimeout(() => setAddedMessage(""), 2000);
+  };
+
+  const handleViewProduct = (sareeId) => {
+    navigate(`/product/${sareeId}`);
   };
 
   return (
@@ -44,18 +50,20 @@ export default function SareeShop() {
         ) : (
           filteredSarees.map((saree) => (
             <div
-              key={saree.id}
+              key={saree._id || saree.id}
               className="bg-white shadow-md rounded-2xl p-4 hover:shadow-lg transition cursor-pointer"
             >
-              <div className="w-full h-60 mb-4 overflow-hidden rounded-xl flex justify-center items-center">
-               <img
-  src={saree.image} // ✅ Use full URL directly from backend
-  alt={saree.name}
-  className="object-cover w-full h-full rounded-xl"
-
+              <div
+                className="w-full h-60 mb-4 overflow-hidden rounded-xl flex justify-center items-center"
+                onClick={() => handleViewProduct(saree._id || saree.id)}
+              >
+                <img
+                  src={saree.image}
+                  alt={saree.name}
+                  className="object-cover w-full h-full rounded-xl"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "/fallback.jpg"; // Optional fallback
+                    e.target.src = "/fallback.jpg";
                   }}
                 />
               </div>
@@ -63,12 +71,20 @@ export default function SareeShop() {
               <p className="text-sm text-gray-600 mb-2">Elegant and traditional wear.</p>
               <div className="flex justify-between items-center">
                 <span className="text-pink-700 font-bold">₹{saree.price}</span>
-                <button
-                  onClick={() => handleAddToCart(saree)}
-                  className="bg-pink-600 hover:bg-pink-700 text-white text-sm px-3 py-1 rounded"
-                >
-                  Add to Cart
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleAddToCart(saree)}
+                    className="bg-pink-600 hover:bg-pink-700 text-white text-sm px-3 py-1 rounded"
+                  >
+                    Add
+                  </button>
+                  <button
+                    onClick={() => handleViewProduct(saree._id || saree.id)}
+                    className="bg-gray-300 hover:bg-gray-400 text-sm px-3 py-1 rounded"
+                  >
+                    View
+                  </button>
+                </div>
               </div>
             </div>
           ))
