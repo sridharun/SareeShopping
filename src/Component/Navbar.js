@@ -9,39 +9,43 @@ export default function Navbar() {
     if (category) {
       navigate(`/shop?category=${category}`);
     } else {
-      navigate("/shop"); // This clears the filter
+      navigate("/shop"); // Clears the filter
     }
   };
-  
-  
+
   return (
-    <header className="bg-white shadow-md px-4 py-4 sm:px-6 sm:py-6">
-      <div className="flex flex-col gap-4 relative">
-        {/* Title and Cart */}
-        <div className="relative flex justify-center items-center">
+    <header className="bg-white shadow-md px-4 py-4 sm:px-6 sm:py-6 w-full">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+        {/* Logo and Cart */}
+        <div className="w-full sm:w-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold text-pink-800">SareeSutra</h1>
           <div
-            className="absolute right-0 cursor-pointer"
+            className="sm:hidden cursor-pointer"
             onClick={() => navigate("/cart")}
           >
             <ShoppingCart className="w-6 h-6 text-pink-800" />
           </div>
         </div>
 
-        {/* Categories Navigation */}
-        <div className="flex items-center justify-between">
-        <nav className="flex flex-wrap gap-3">
-  {["All", "Silk", "Cotton", "Linen", "Designer", "Traditional"].map((type) => (
-    <button
-      key={type}
-      onClick={() => handleCategoryClick(type)}
-      className="text-pink-700 hover:text-pink-900 font-medium text-sm sm:text-base"
-    >
-      {type}
-    </button>
-  ))}
-</nav>
+        {/* Categories */}
+        <nav className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-4 text-sm sm:text-base">
+          {["All", "Silk", "Cotton", "Linen", "Designer", "Traditional"].map((type) => (
+            <button
+              key={type}
+              onClick={() => handleCategoryClick(type)}
+              className="text-pink-700 hover:text-pink-900 font-medium transition"
+            >
+              {type}
+            </button>
+          ))}
+        </nav>
 
+        {/* Cart for larger screens */}
+        <div
+          className="hidden sm:block cursor-pointer"
+          onClick={() => navigate("/cart")}
+        >
+          <ShoppingCart className="w-6 h-6 text-pink-800" />
         </div>
       </div>
     </header>

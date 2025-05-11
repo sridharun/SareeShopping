@@ -14,22 +14,12 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("orders", JSON.stringify(orders));
   }, [orders]);
 
-  const addToCart = (item) => {
-    setCartItems((prev) => [...prev, item]);
-  };
-
-  const removeFromCart = (index) => {
-    setCartItems((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const addOrder = (order) => {
-    setOrders((prev) => [...prev, order]);
-  };
+  const addToCart = (item) => setCartItems((prev) => [...prev, item]);
+  const removeFromCart = (index) => setCartItems((prev) => prev.filter((_, i) => i !== index));
+  const addOrder = (order) => setOrders((prev) => [...prev, order]);
 
   return (
-    <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, orders, addOrder }}
-    >
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, orders, addOrder }}>
       {children}
     </CartContext.Provider>
   );

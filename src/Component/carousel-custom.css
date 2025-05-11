@@ -1,0 +1,22 @@
+/* .carousel .control-arrow {
+  opacity: 1 !important;
+  visibility: visible !important;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+}
+
+.carousel .control-prev.control-arrow {
+  left: 10px;
+}
+
+.carousel .control-next.control-arrow {
+  right: 10px;
+}
+
+.carousel .control-arrow:before {
+  font-size: 24px;
+  color: white;
+} */
